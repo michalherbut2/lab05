@@ -1,8 +1,14 @@
 package pl.michalherbut.jp.lab05.lab05;
 
-class Vehicle implements Runnable {
+//class Vehicle implements Runnable {
+class Vehicle extends Thread {
     private static char nextLabel = 'a';
     private char label;
+
+    public int getSize() {
+        return size;
+    }
+
     private int size;
 
     public char getLabel() {
@@ -30,7 +36,8 @@ class Vehicle implements Runnable {
         this.size = size;
         this.weight = weight;
         this.bridge = bridge;
-        this.label = nextLabel++;
+        this.label = nextLabel;
+        if (nextLabel == 'z') nextLabel = 'a'; else nextLabel++;
     }
 
     @Override
@@ -40,10 +47,10 @@ class Vehicle implements Runnable {
             bridge.enter(this);
             // Move on the bridge
             bridge.move(this);
+            // Exit the bridge
+            bridge.exit(this);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        // Exit the bridge
-        bridge.exit(this);
     }
 }
